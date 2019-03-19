@@ -35,7 +35,7 @@ def sample_label_mapping(filename):
     sample_label_dict = {} 
     for i in range(df.shape[0]):
         sample_label_dict[df.loc[i]['sample']] = df.loc[i]['pop']
-    # print(df.head())
+        
     return sample_label_dict 
 
 def label_name_mapping(filename):
@@ -150,7 +150,7 @@ def apply_PCA(X,y, label_name_map , plot_dir , crdints_dir):
     start_time = time.time() 
     X = pca.fit_transform(X) 
     end_time = time.time() 
-    logging.info('PCA finished in {} with SEED: {}'.format(end_time - start_time, SEED))
+    logging.info('PCA finished in {}s with SEED: {}'.format(end_time - start_time, SEED))
     logging.info('[{}]Writing Coordinates at '.format(ID) + crdints_dir)
     ID += 1 
     write_reduced_coordinates(X , crdints_dir + '/[{}]PCACoordinates.txt'.format(ID)) 
@@ -173,7 +173,7 @@ def apply_umap(X,y, label_name_map , plot_dir , crdints_dir):
     start_time = time.time() 
     X = umap_.fit_transform(X) 
     end_time = time.time() 
-    logging.info('UMAP finished in {:.5} with SEED: {}'.format(end_time - start_time, SEED))
+    logging.info('UMAP finished in {}s with SEED: {}'.format(end_time - start_time, SEED))
     logging.info('[{}]Writing Coordinates at '.format(ID) + crdints_dir)
     ID += 1     
     write_reduced_coordinates(X , crdints_dir + '/[{}]UMAPCoordinates.txt'.format(ID))
