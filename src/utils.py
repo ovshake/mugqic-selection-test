@@ -182,3 +182,16 @@ def apply_umap(X,y, label_name_map , plot_dir , crdints_dir):
     plot(X, y, label_name_map , plot_dir , 'UMAP')
     logging.info('Ploting Finished')
     logging.info('The Packages Used Are\n{}'.format(package_versions())) 
+
+
+    
+def function_docs():
+    """
+    @description: Returns a string which has the docs for all the functions used
+    """
+    functions = [setup_log , sample_label_mapping , label_name_mapping , read_gene_data , 
+                    process_column , preprocess_data, plot , write_reduced_coordinates, package_versions, apply_PCA, apply_umap]
+    docs = ""
+    for fn in functions:
+        docs += '{} \n {}\n'.format(fn.__name__ , fn.__doc__) 
+    return docs 
