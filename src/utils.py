@@ -134,3 +134,51 @@ def package_versions():
     versions = 'Pandas - {}\nNumPy - {}\nsklearn - {}\numap - {}\nSeaborn - {}\nMatplotlib - {}'
     versions = versions.format(pd.__version__ , np.__version__ , sklearn.__version__ ,umap.__version__,  sns.__version__, matplotlib.__version__) 
     return versions  
+
+def apply_PCA(X,y, label_name_map , plot_dir , crdints_dir):
+    """
+    @Description: Applies PCA, plots the reduced dimensional features, writes the co-ordinates in .txt file
+                  and writes the log files.
+    @Params: X: A NumPy array containing data 
+            y: A list containing labels of the data 
+            label_name_map: mapping between abbreviation and full name of the populations
+            plot_dir: path of directory storing the plots
+            crdints_dir: path of directory storing the .txt files of the 2-d coordinates
+    """
+    global ID 
+    pca = PCA(n_components=2, random_state=SEED) 
+    start_time = time.time() 
+    X = pca.fit_transform(X) 
+    end_time = time.time() 
+    logging.info('PCA finished in {} with SEED: {}'.format(end_time - start_time, SEED))
+    logging.info('[{}]Writing Coordinates at '.format(ID) + crdints_dir)
+    ID += 1 
+    write_reduced_coordinates(X , crdints_dir + '/[{}]PCACoordinates.txt'.format(ID)) 
+    logging.info('[{}]Plotting PCA co-ordinates in '.format(ID)+plot_dir)
+    ID += 1
+    plot(X, y, label_name_map , plot_dir , 'PCA')
+
+def apply_umap(X,y, label_name_map , plot_dir , crdints_dir): 
+    """
+    @Description: Applies UMAP, plots the reduced dimensional features, writes the co-ordinates in .txt file
+                  and writes the log files.
+    @Params: X: A NumPy array containing data 
+            y: A list containing labels of the data 
+            label_name_map: mapping between abbreviation and full name of the populations
+            plot_dir: path of directory storing the plots
+            crdints_dir: path of directory storing the .txt files of the 2-d coordinates
+    """
+    global ID
+    umap_ = umap.UMAP(random_state = SEED) 
+    start_time = time.time() 
+    X = umap_.fit_transform(X) 
+    end_time = time.time() 
+    logging.info('UMAP finished in {:.5} with SEED: {}'.format(end_time - start_time, SEED))
+    logging.info('[{}]Writing Coordinates at '.format(ID) + crdints_dir)
+    ID += 1     
+    write_reduced_coordinates(X , crdints_dir + '/[{}]UMAPCoordinates.txt'.format(ID))
+    logging.info('[{}]Plotting UMAP co-ordinates in '.format(ID)+plot_dir)
+    ID += 1
+    plot(X, y, label_name_map , plot_dir , 'UMAP')
+    logging.info('Ploting Finished')
+    logging.info('The Packages Used Are\n{}'.format(package_versions())) 
