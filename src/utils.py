@@ -91,3 +91,38 @@ def preprocess_data(raw_data, sample_label_dict):
         y.append(sample_label_dict[sample])
     
     return np.asarray(X) , y
+
+def plot(X , Y , label_name_map, plot_dir , type_):
+    """
+    @Params: X: NumPy array containing data
+            y: list containing labels
+            label_name_map: mapping between abbreviation and full name of the populations
+            plot_dir: path of directory storing the plots
+            type_: str representing the type of algorithm (PCA / UMAP)
+    """
+    title = '[{}]{} Dimensionality Reduction Scatterplot'
+    dim_red_x = [x[0] for x in X] 
+    dim_red_y = [x[1] for x in X] 
+    labels = [label_name_map[y] for y in Y] 
+    del X 
+    X_col_name = '{} - X'
+    Y_col_name = '{} - Y'
+    data = {X_col_name.format(type_): dim_red_x , Y_col_name.format(type_) : dim_red_y , 'Label': labels}
+    df = pd.DataFrame.from_dict(data)
+    a4_dims = (14, 14)
+    fig,ax = plt.subplots(figsize=a4_dims)
+    ax = sns.scatterplot(x = X_col_name.format(type_), y = Y_col_name.format(type_) , data = df , hue = 'Label',  ax = ax)  
+    ax.set_title(title.format(ID,type_))
+    ax.legend(loc = (0.80, 0))
+    plt.savefig(plot_dir + '/' + title.format(ID , type_) + '.jpeg')
+    plt.close() 
+
+def write_reduced_coordinates(X , filename):
+    """
+    @Params: X: NumPy array containing data
+            filename: path to the .txt file which will store the 2-D data 
+    """
+    with open(filename , 'w') as f:
+        for x_,y_ in X:
+            # print(x_, y_)
+            f.write(str(x_) + ',' + str(y_) + '\n') 
