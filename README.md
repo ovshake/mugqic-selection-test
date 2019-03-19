@@ -41,3 +41,7 @@ To run the code the libraries required (and the versions which I used are):
 * ```--label_src```: path to the sample-label .txt file (mandatory)
 * ```--full_pop_name```: path to name-verbose name .txt file (mandatory)
 
+## Plots 
+
+![PCA](https://github.com/ovshake/mugqic-selection-test/blob/master/plots/%5B3%5DPCA%20Dimensionality%20Reduction%20Scatterplot.jpeg)
+![UMAP](https://github.com/ovshake/mugqic-selection-test/blob/master/plots/%5B5%5DUMAP%20Dimensionality%20Reduction%20Scatterplot.jpeg)
