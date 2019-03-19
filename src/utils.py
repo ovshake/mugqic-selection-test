@@ -126,3 +126,11 @@ def write_reduced_coordinates(X , filename):
         for x_,y_ in X:
             # print(x_, y_)
             f.write(str(x_) + ',' + str(y_) + '\n') 
+
+def package_versions():
+    """
+    @Returns: versions: A str which contains all the versions of the packages used
+    """
+    versions = 'Pandas - {}\nNumPy - {}\nsklearn - {}\numap - {}\nSeaborn - {}\nMatplotlib - {}'
+    versions = versions.format(pd.__version__ , np.__version__ , sklearn.__version__ ,umap.__version__,  sns.__version__, matplotlib.__version__) 
+    return versions  
