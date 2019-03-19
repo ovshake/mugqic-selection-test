@@ -48,3 +48,46 @@ def label_name_mapping(filename):
     for i in range(df.shape[0]):
         label_name_dict[df.loc[i]['Population Code']] = df.loc[i]['Population Description']
     return label_name_dict 
+
+def read_gene_data(filename):
+    """
+    @Params: filename: Path to the gene data
+    @Returns: df: a DataFrame object with the data
+    """
+    df = pd.read_csv(filename, sep = '\t') 
+    return df 
+
+def process_column(col):
+    """
+    @Params: col: A column with the gene data of the format x/y
+    @Returns: col: Modified column with a numeric representation of x/y
+                   with 2*x + y. 
+                   ./. is replaced with -1
+    """
+    for i,x in enumerate(col):
+        if  x == BLANK:
+            col[i] = -1 
+        else:
+            activations = list(map(int, x.split('/')))
+            col[i] = 2 * activations[0] + activations[1]    
+    return col 
+
+
+def preprocess_data(raw_data, sample_label_dict):
+    """
+    @Params: raw_data: A DataFrame containing the raw gene data as given in the .vcf file
+             sample_label_dict: Dict having mapping between Sample and the label
+    @Returns: X: A NumPy array with each row representing a multidimensional data-point.
+              y: List containing labels
+    """
+    # print(raw_data.columns)
+    samples = list(raw_data.columns)[9:]  #list(sample_label_df.index.values)  # sample_label_df['sample'].values 
+    X , y = [] , [] 
+    for sample in samples:
+        # print('Cur Sample is ' , sample)
+        raw_col_data = raw_data[sample].values
+        processed_col_data = process_column(raw_col_data) 
+        X.append(processed_col_data) 
+        y.append(sample_label_dict[sample])
+    
+    return np.asarray(X) , y
